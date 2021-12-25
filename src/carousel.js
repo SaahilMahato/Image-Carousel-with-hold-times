@@ -19,7 +19,6 @@ class Carousel {
         // create attributes needed for processing
         this.index = 0; // stores current index of navigator
         this.images = this.wrapper.getElementsByTagName('img');
-        this.pixelsPerFrame = 10; // determines how much the image move in pixels when slide method is called. Lower value means smoother animation
 
         //create attributes needed for new elements
         this.rightButton;
@@ -32,6 +31,15 @@ class Carousel {
         this.setupWrapperLayout();
         this.setupNavigationButtons();
         this.setupIndicator();
+
+        // setup autoslide
+        this.autoSlideInterval = setInterval(() => {
+            if (this.index < this.images.length - 1)
+                this.index++;
+            else
+                this.index = 0;
+            this.slide();
+        }, this.delayTime * 1000);
     }
 
     setupContainerLayout = () => {
@@ -58,7 +66,7 @@ class Carousel {
         // function that sets same attributes for both buttons. used to reduce code repetition
         const styleButton = (button) => {
             button.style.position = 'absolute';
-            button.style.top = parseInt(this.height)/2 - 32 + 'px'; // calculate on the basis of height
+            button.style.top = parseFloat(this.height)/2 - 32 + 'px'; // calculate on the basis of height
             button.style.backgroundColor = 'rgba(0,0,0,0)'; // set transparency
             button.style.border = 'none';
             button.style.fontSize = '48px';
@@ -94,19 +102,29 @@ class Carousel {
 
     slide = () => {
         this.wrapper.animate([
-            { left: - this.index * parseInt(this.width) + 'px'}
+            { left: - this.index * parseFloat(this.width) + 'px'}
         ], {
             duration: this.transitionTime*1000,
             iterations: 1,
             fill: 'forwards'
         })
-        this.radio[this.index].checked = true;  
+        this.radio[this.index].checked = true;
+
+        //reset autoslide
+        clearInterval(this.autoSlideInterval);
+        this.autoSlideInterval = setInterval(() => {
+            if (this.index < this.images.length - 1)
+                this.index++;
+            else
+                this.index = 0;
+            this.slide();
+        }, (this.delayTime + this.transitionTime) * 1000);
     }
 
     setupIndicator = () => {
         this.radioGroup = document.createElement('div');
         this.radioGroup.style.position = 'absolute';
-        this.radioGroup.style.left = (parseInt(this.width)/2) - (this.images.length*15/2) + 'px'; // width/2 - width_of_indicator/2 
+        this.radioGroup.style.left = (parseFloat(this.width)/2) - (this.images.length*15/2) + 'px'; // width/2 - width_of_indicator/2 
         this.radioGroup.style.bottom = '0px';
 
         for (let i=0; i<this.images.length; i++) {
