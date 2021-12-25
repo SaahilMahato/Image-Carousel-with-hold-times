@@ -23,8 +23,14 @@ p {
     text-align: center;
 }
 
-.carousel-container-1, .carousel-container-2 {
+.carousel-container-1 {
     margin: 2% auto;
     width: 700px;
     height: 400px;
+}
+
+.carousel-container-2 {
+    margin: 2% auto;
+    width: 400px;
+    height: 700px;
 }
