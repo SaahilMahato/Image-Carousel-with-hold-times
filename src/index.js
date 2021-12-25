@@ -1,2 +1,2 @@
-const carousel1 = new Carousel('.carousel-container-1', '500px', '300px');
-const carousel2 = new Carousel('.carousel-container-2', '600px', '350px');
+const carousel1 = new Carousel('.carousel-container-1', {transitionTime: 0.5, delayTime: 2});
+const carousel2 = new Carousel('.carousel-container-2', {transitionTime: 3, delayTime: 5});

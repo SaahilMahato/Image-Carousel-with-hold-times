@@ -5,14 +5,16 @@
 */
 
 class Carousel {
-    constructor(containerSelector, width, height) {
+    constructor(containerSelector, config) {
 
         // store arguments
         this.containerName = containerSelector;
         this.container = document.querySelector(containerSelector);
         this.wrapper = this.container.querySelector('.carousel-image-wrapper');
-        this.width = width;
-        this.height = height;
+        this.width = window.getComputedStyle(this.container).getPropertyValue('width');
+        this.height = window.getComputedStyle(this.container).getPropertyValue('height');
+        this.transitionTime = config.transitionTime;
+        this.delayTime = config.delayTime;
 
         // create attributes needed for processing
         this.index = 0; // stores current index of navigator
@@ -90,22 +92,15 @@ class Carousel {
         this.container.appendChild(this.leftButton);
     }
 
-    slideLeft = (speed) => {
-        if (parseInt(this.wrapper.style.left) > (- this.index * parseInt(this.width))){
-            this.wrapper.style.left = (parseInt(this.wrapper.style.left) + speed) + 'px';
-            window.requestAnimationFrame(() => this.slideLeft(speed));
-        }
-        else
-            this.radio[this.index].checked = true;
-    }
-
-    slideRight = (speed) => {
-        if (parseInt(this.wrapper.style.left) < (- this.index * parseInt(this.width))){
-            this.wrapper.style.left = (parseInt(this.wrapper.style.left) + speed) + 'px';
-            window.requestAnimationFrame(() => this.slideRight(speed));
-        }
-        else
-            this.radio[this.index].checked = true;
+    slide = () => {
+        this.wrapper.animate([
+            { left: - this.index * parseInt(this.width) + 'px'}
+        ], {
+            duration: this.transitionTime*1000,
+            iterations: 1,
+            fill: 'forwards'
+        })
+        this.radio[this.index].checked = true;  
     }
 
     setupIndicator = () => {
@@ -125,17 +120,11 @@ class Carousel {
             newRadio.addEventListener('click', () => {
                 let prev_index = this.index;
                 this.index = parseInt(newRadio.value);
-                let speed;
 
                 if (prev_index == this.index)
                     return; // if no change in index don't move
-                else if (prev_index > this.index) {
-                    speed = this.pixelsPerFrame * Math.abs(prev_index-this.index);
-                    this.slideRight(speed);
-                }
                 else {
-                    speed = -this.pixelsPerFrame * Math.abs(prev_index-this.index);
-                    this.slideLeft(speed);
+                    this.slide();
                 }
             });
 
@@ -147,30 +136,24 @@ class Carousel {
     }
 
     next = () => {
-        let speed;
         if (this.index < this.images.length - 1) {
             this.index++;
-            speed = -this.pixelsPerFrame;
-            this.slideLeft(speed);
+            this.slide();
         }
         else {
             this.index = 0;
-            speed = this.pixelsPerFrame * this.images.length;
-            this.slideRight(speed);
+            this.slide();
         }
     }
     
     previous = () => {
-        let speed;
         if (this.index > 0) {
             this.index--;
-            speed = this.pixelsPerFrame;
-            this.slideRight(speed);
+            this.slide();
         }
         else {
             this.index = this.images.length-1;
-            speed = -this.pixelsPerFrame * this.images.length;
-            this.slideLeft(speed);
+            this.slide();
         }
     }
 }

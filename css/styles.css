@@ -13,9 +13,9 @@
     display: table;
 }
 
-h1 {
+h1, h2 {
     text-align: center;
-    margin: 1%;
+    margin: 0.2%;
 }
 
 p {
@@ -25,4 +25,6 @@ p {
 
 .carousel-container-1, .carousel-container-2 {
     margin: 2% auto;
+    width: 700px;
+    height: 400px;
 }
