@@ -1,0 +1,28 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.clearfix {
+    overflow: none;
+}
+
+.clearfix:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+h1 {
+    text-align: center;
+    margin: 1%;
+}
+
+p {
+    color: red;
+    text-align: center;
+}
+
+.carousel-container-1, .carousel-container-2 {
+    margin: 2% auto;
+}
