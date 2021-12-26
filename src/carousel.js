@@ -34,13 +34,7 @@ class Carousel {
         this.setupIndicator();
 
         // setup autoslide
-        this.autoSlideInterval = setInterval(() => {
-            if (this.index < this.images.length - 1)
-                this.index++;
-            else
-                this.index = 0;
-            this.slide();
-        }, this.delayTime * 1000);
+        this.setupAutoSlide();
     }
 
     setupContainerLayout = () => {
@@ -113,6 +107,10 @@ class Carousel {
 
         //reset autoslide
         clearInterval(this.autoSlideInterval);
+        this.setupAutoSlide();
+    }
+
+    setupAutoSlide = () => {
         this.autoSlideInterval = setInterval(() => {
             if (this.index < this.images.length - 1)
                 this.index++;
