@@ -32,14 +32,22 @@ class Carousel {
         this.setupWrapperLayout();
         this.setupNavigationButtons();
         this.setupIndicator();
+        this.styleIndicator();
 
         // setup autoslide
         this.setupAutoSlide();
+
+        window.addEventListener('resize', () => {
+            this.width = window.getComputedStyle(this.container).getPropertyValue('width');
+            this.height = window.getComputedStyle(this.container).getPropertyValue('height');
+            this.setupContainerLayout();
+            this.setupWrapperLayout();
+            this.setupNavigationButtons();
+            this.styleIndicator();
+        });
     }
 
     setupContainerLayout = () => {
-        this.container.style.width = this.width;
-        this.container.style.height = this.height;
         this.container.style.overflow = 'hidden';
         this.container.style.position = 'relative';
     }
@@ -120,11 +128,15 @@ class Carousel {
         }, (this.delayTime + this.transitionTime) * 1000);
     }
 
-    setupIndicator = () => {
-        this.radioGroup = document.createElement('div');
+    styleIndicator = () => {
         this.radioGroup.style.position = 'absolute';
         this.radioGroup.style.left = (parseFloat(this.width)/2) - (this.images.length*15/2) + 'px'; // width/2 - width_of_indicator/2 
         this.radioGroup.style.bottom = '0px';
+    }
+
+    setupIndicator = () => {
+        this.radioGroup = document.createElement('div');
+        this.styleIndicator();
 
         for (let i=0; i<this.images.length; i++) {
             const newRadio = document.createElement('input');
