@@ -1,7 +1,8 @@
 /**
     * @param {string} container - name of the container with .for classname and # for id
-    * @param {string} width - width of the container
-    * @param {string} height - height of the container
+    * @param {object} config - keys -> transitionTime, delayTime
+    * @param {number} transitionTime - time it takes for the image to slide in seconds
+    * @param {number} delayTime - time it takes for the image to automatically start sliding in seconds
 */
 
 class Carousel {
